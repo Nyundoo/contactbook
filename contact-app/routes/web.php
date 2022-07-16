@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MpesaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,13 +56,17 @@ Route::delete('/companies/{company}', [CompanyController::class, 'destroy'] )->n
 
 Route::get('/companies/{company}/edit', [CompanyController::class, 'edit'] )->name('companies.edit');
 
+//Profile Routes
 
 Route::get('/settings/profile', [ProfileController::class, 'edit'] )->name('settings.profile.edit');
 
 Route::put('/settings/profile', [ProfileController::class, 'update'] )->name('settings.profile.update');
 
-
 });
+
+Route::post('/get-token', [App\Http\Controllers\payments\mpesa\MpesaController::class, 'getAccessToken'] );
+
+Route::post('/register-urls', [App\Http\Controllers\payments\mpesa\MpesaController::class, 'registerURLs'] );
 
 Auth::routes(['verify' => true]);
 

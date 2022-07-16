@@ -32,19 +32,5 @@ class ContactRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'company_id' => 'company',
-            'email' => 'email address'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'email.email' => 'the email that you entered is not valid',
-            '*.required' => 'The :attribute field cannot be empty'
-        ];
-    }
+    
 }
