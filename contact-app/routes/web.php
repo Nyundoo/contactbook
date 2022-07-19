@@ -64,9 +64,11 @@ Route::put('/settings/profile', [ProfileController::class, 'update'] )->name('se
 
 });
 
-Route::post('/get-token', [App\Http\Controllers\payments\mpesa\MpesaController::class, 'getAccessToken'] );
+Route::post('/get-token', [MpesaController::class, 'generateAccessToken'] );
 
-Route::post('/register-urls', [App\Http\Controllers\payments\mpesa\MpesaController::class, 'registerURLs'] );
+Route::post('/register-urls', [MpesaController::class, 'mpesaRegisterUrls'] );
+
+Route::post('/simulate', [MpesaController::class, 'customerMpesaSTKPushx'] );
 
 Auth::routes(['verify' => true]);
 

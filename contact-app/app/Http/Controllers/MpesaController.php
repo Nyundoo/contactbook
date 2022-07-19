@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\MpesaTransaction;
+use App\Models\MpesaTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -49,8 +49,48 @@ class MpesaController extends Controller
             'PartyA' => 254710724880, // replace this with your phone number
             'PartyB' => 174379,
             'PhoneNumber' => 254710724880, // replace this with your phone number
-            'CallBackURL' => 'https://blog.hlab.tech/',
-            'AccountReference' => "H-lab tutorial",
+            'CallBackURL' => 'https://www.codeolsolutions.co.ke/',
+            'AccountReference' => "Simulate",
+            'TransactionDesc' => "Testing stk push on sandbox"
+        ];
+
+        $data_string = json_encode($curl_post_data);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+
+        $curl_response = curl_exec($curl);
+
+        return $curl_response;
+    }
+
+
+        /**
+     * Lipa na M-PESA STK Push method
+     * */
+
+    public function customerMpesaSTKPushx(Request $request)
+    {
+        $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$this->generateAccessToken()));
+
+
+        $curl_post_data = [
+            //Fill in the request parameters with valid values
+            'BusinessShortCode' => 174379,
+            'Password' => $this->lipaNaMpesaPassword(),
+            'Timestamp' => Carbon::rawParse('now')->format('YmdHms'),
+            'TransactionType' => 'CustomerPayBillOnline',
+            'Amount' => $request->amount,
+            'PartyA' => $request->mobilenumber, // replace this with your phone number
+            'PartyB' => 174379,
+            'PhoneNumber' => $request->mobilenumber, // replace this with your phone number
+            'CallBackURL' => 'https://www.codeolsolutions.co.ke/',
+            'AccountReference' => "Ndiema Mpesa Simulate",
             'TransactionDesc' => "Testing stk push on sandbox"
         ];
 
@@ -159,11 +199,13 @@ class MpesaController extends Controller
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array(
             'ShortCode' => "600141",
             'ResponseType' => 'Completed',
-            'ConfirmationURL' => "https://blog.hlab.tech/api/v1/hlab/transaction/confirmation",
-            'ValidationURL' => "https://blog.hlab.tech/api/v1/hlab/validation"
+            'ConfirmationURL' => "https://www.codeolsolutions.co.ke/api/v1/nyundoo/confirmation",
+            'ValidationURL' => "https://www.codeolsolutions.co.ke/api/v1/nyundoo/validation"
         )));
         $curl_response = curl_exec($curl);
-        echo $curl_response;
+        return $curl_response;
     }
+
+    
 
 }

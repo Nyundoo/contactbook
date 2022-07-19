@@ -21,8 +21,8 @@
                     Register URLs
                 </div>
                 <div class="card-body">
-                    <div id="response"></div>
-                    <button id="registerURLs" class="btn btn-primary">Register URLs</button>
+                    <h5 id="response"></h5>
+                    <button id="registerURLS" class="btn btn-primary">Register URLs</button>
                 </div>
             </div>
         </div>
@@ -39,10 +39,10 @@
                             <input type="number" name="amount" class="form-control" id="amount">
                         </div>
                         <div class="form-group">
-                            <label for="account">Account</label>
-                            <input type="account" name="account" class="form-control" id="amount">
+                            <label for="mobilenumber">Mobile Number</label>
+                            <input type="number" name="mobilenumber" class="form-control" id="mobilenumber">
                         </div>
-                        <button class="btn btn-primary">Simulate Payment</button>
+                        <button id="simulatePayment" class="btn btn-primary">Simulate Payment</button>
                     </form>
                     
                 </div>
@@ -63,25 +63,43 @@
     axios.post('/get-token', {})
         .then((response)=> {
             console.log(response.data);
-            document.getElementById('access_token').innerHTML=response.data.access_token;
+            document.getElementById('access_token').innerHTML=response.data;
         })
         .catch((error) => {
             console.log(error);
         });
    }
 
-   document.getElementById('registerURLs').onclick = function()
+   document.getElementById('registerURLS').onclick = function()
    {
-    axios.post('/register_urls', {})
+    axios.post('/register-urls', {})
         .then((response)=> {
             if(response.data.ResponseDescription){
+                console.log(response.data);
                 document.getElementById('response').innerHTML = response.data.ResponseDescription;
             } else {
-                document.getElementById('response').innerHTML = response.data.errorMessage
+                document.getElementById('response').innerHTML = response.data.ResponseCode
             }
             console.log(response.data);
             // document.getElementById('access_token').innerHTML=response.data.access_token;
         })
+        .catch((error) => {
+            console.log(error);
+        });
+   }
+
+   document.getElementById('simulatePayment').onclick = function()
+   {
+
+    const requestBody = {
+        amount: document.getElementById('amount').value,
+        mobilenumber: document.getElementById('mobilenumber').value
+    }
+
+    axios.post('/simulate', requestBody)
+        .then((response)=> {           
+                console.log(response.data);
+                })
         .catch((error) => {
             console.log(error);
         });

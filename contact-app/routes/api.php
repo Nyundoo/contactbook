@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MpesaController;
+use App\Http\Controllers\MPESAResponseController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,9 @@ Route::post('/v1/nyundoo/transaction/confirmation', [MpesaController::class, 'mp
 
 
 Route::post('/v1/nyundoo/register/url', [MpesaController::class, 'mpesaRegisterUrls'] );
+
+
+Route::post('validation', [MPESAResponseController::class, 'validation']);
+
+
+Route::post('confirmation', [MPESAResponseController::class, 'confirmation']);
